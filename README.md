@@ -6,10 +6,13 @@ This repository is an (more or less) structured collection of my experiments, id
 
 A preliminary outline of issues I have in mind and will gradually complete:
 
-* Control rhythmic and melodic processes
+* Control rhythmic and melodic processes in time
   * Several Ways to play a melody
   * Use of `at`
-  * Time control
+  * Use of `spread`
+  * Synchronisation of live_loops
+  * Patterns, bars and phrases
+  * Sample slicing and reordering
 * Manipulate sound
   * Filters
   * Synths
@@ -26,5 +29,6 @@ A preliminary outline of issues I have in mind and will gradually complete:
   * Echo and canon
   * Layered samples with different rates
 * Music and chance
+* Linear flow versus recurring patterns
 
 (I will write in English. This is not my first language. If you find errors and misspellings ignore it or let me know so I can fix that and improve my English.)
