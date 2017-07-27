@@ -8,8 +8,8 @@ A preliminary outline of issues I have in mind and will gradually complete:
 
 * Control rhythmic and melodic processes in time
   * [Several Ways to play a melody](https://github.com/mbutz/sonic-pi-resources/tree/master/control_rhythmic_and_melodic_processes)
-  * [Use of `at`](https://github.com/mbutz/sonic-pi-resources/blob/master/control_rhythmic_and_melodic_processes/use_of_at.rb)
-  * [Use of `spread`]()
+  * [Use of `at`](https://github.com/mbutz/sonic-pi-resources/blob/master/control_rhythmic_and_melodic_processes/use-of-at.rb)
+  * [Use of `spread`](https://github.com/mbutz/sonic-pi-resources/blob/master/control_rhythmic_and_melodic_processes/use-of-spread.rb)
   * [Simple Samba with `spread` and `at`](https://github.com/mbutz/sonic-pi-resources/blob/master/control_rhythmic_and_melodic_processes/samba-with-spread-and-at.rb)
   * [Synchronisation of `live_loops`](https://github.com/mbutz/sonic-pi-resources/blob/master/control_rhythmic_and_melodic_processes/synchronisation-of-live-loops.rb)
   * [Change Parameters per Pattern](https://github.com/mbutz/sonic-pi-resources/blob/master/control_rhythmic_and_melodic_processes/change-params-per-pattern.rb)
