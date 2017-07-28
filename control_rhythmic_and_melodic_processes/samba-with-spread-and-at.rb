@@ -47,7 +47,7 @@ live_loop :shaker_cabasa, sync: :bar do
         end
       end
     end
-
+    
     # Cabasa
     #     >       >   |     >       >   |
     #     ___     ___ |     ___     ___ |
@@ -61,7 +61,7 @@ live_loop :shaker_cabasa, sync: :bar do
       end
     end
   end
-
+  
   sleep 0.5
 end
 
@@ -97,7 +97,7 @@ live_loop :agogo_congas, sync: :bar do
   at(ring 2,2.5,6,7) do
     sample :elec_bell, rate: 1.7, amp: 1.0
   end
-
+  
   # Congas
   #       _       _ |       _ ___     |
   # |     |  |    | | 7   7 | | | |   |
@@ -105,7 +105,7 @@ live_loop :agogo_congas, sync: :bar do
   at(ring 0,1.5,2,3.5,5.5,6,6.5,7) do
     sample :tabla_tas3, rate: 0.65
   end
-
+  
   sleep 8
 end
 
@@ -121,11 +121,11 @@ end
 #       -       - |       -       - |
 live_loop :snare_bassdrum, sync: :bar do
   #stop
-  at(ring 1,3,4.5,6,7) do
+  at (ring 1,3,4.5,6,7) do
     sample :drum_snare_hard, amp: 0.75
   end
-  at(ring 0,1.5,2,3.5,4,5.5,7,7.5) do
-    sample sample :tabla_ghe4, rate: 0.5, amp: 2, finish: 0.75, release: 0.25
+  at (ring 0,1.5,2,3.5,4,5.5,7,7.5) do
+    sample :tabla_ghe4, rate: 0.5, amp: 2, finish: 0.75, release: 0.25
   end
   sleep 8
 end
