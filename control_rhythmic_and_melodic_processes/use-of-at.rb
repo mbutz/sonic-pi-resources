@@ -100,33 +100,6 @@ live_loop :hat_random_negative, sync: :bar do
 end
 
 ###########################################
-# Using 'at' plus echo to create fake break
-###########################################
-live_loop :breakbeat, sync: :bar do
-  stop
-  with_fx :rhpf, cutoff: (ring 80).choose, res: 0.65, mix: 0.5 do |rhpf|
-    # to change the beak adust phase value to values such as 0.5, 0.75, 1.25
-    # 0.25 sound echo like and more unnatural but interesting
-    # you can also increase the decay to stress the break even more
-    with_fx :echo, decay: 1, phase: (ring 0.5,0.75).choose, mix: 0.0, amp: 0.75 do |echo|
-      # choose the time, when the echo comes in; with :amen beat 10 is a good choice
-      # to land at the beginning of the 16-bar phrase without another echo
-      at (ring 10) do
-        sample :elec_blip2, rate: 1.5 # just for testing: here the echo and the break start
-        # reduce the amp because otherwise original plus echo gets to loud
-        control echo, mix: 0.5, mix_slide: 0.0, amp: 0.5, amp_slide: 0.0
-      end
-      sample :elec_blip2 # just for testing: start of the 4 bar phrase
-      4.times do
-        sample :loop_amen, beat_stretch: 4, pitch: 0, finish: 1, amp: 1.25
-        sleep 4
-      end
-    end
-  end
-end
-
-
-###########################################
 # Playing Melodies
 ###########################################
 live_loop :melody, sync: :bar do
@@ -156,7 +129,7 @@ live_loop :bass, sync: :bar do
 end
 
 # Trying to combine "at" with "synth"; does not work as I expect,
-# but causes a very intersting effect:
+# but causes a very interesting effect:
 # creates as many voices as there are values given to "at"
 live_loop :synthi do
   stop

@@ -1,5 +1,6 @@
 # Sonic Pi resources collected by Martin Butz, mb@mkblog.org
 # filename: synchronization-of-live-loops.rb
+# 'uncomment' the example you wan't to listen to...
 
 use_bpm 120
 
@@ -14,6 +15,7 @@ comment do
     sleep 0.5
   end
 
+  # sync this live loop with :hihat1
   live_loop :bass1, sync: :hihat1 do
     sample :bd_ada, amp: 1
     sleep 1.75
@@ -23,6 +25,7 @@ comment do
     sleep 2
   end
 
+  # sync this live loop with :hihat1
   live_loop :snare1, sync: :hihat1 do
     sleep 1
     sample :drum_snare_soft
@@ -100,12 +103,60 @@ comment do
 
 end #comment
 
-###################################################
-# Keeping patterns synchroneous (keyboard and bass)
-###################################################
+###############################################################
+# Keeping patterns and phrases synchroneous (keyboard and bass)
+###############################################################
 
-uncomment do
+comment do
 
-  
+  use_bpm 110
 
-end
+  # Marks the beats like a metronome
+  live_loop :beat do
+    sleep 1 # counts every beat
+  end
+
+  # Marks the beats like a metronome
+  live_loop :four_bars, sync: :beat do
+    sample :elec_blip2, rate: 1.5, amp: 1
+    sleep 16 # counts 4 bars
+  end
+
+  # chords
+  live_loop :pad, sync: :four_bars do
+    #stop
+    use_synth :beep
+    use_synth_defaults amp: 0.45, attack: 0.1, sustain: 0.5, release: 3
+    with_fx :reverb, room: 1, mix: 0.75 do
+      with_fx :flanger do
+        play [:b3, :b4, :d4, :fs4, :a4, :fs5]
+        sleep 1.5
+        play [:d3, :g4, :a4, :d4, :g5]
+        sleep 6.5
+        play [:a3, :e4, :a4, :b4, :e5]
+        sleep 1.5
+        play [:gs3, :gs4, :e4, :b4, :e5]
+        sleep 6.5
+      end
+    end
+  end
+
+  # Bass Line "Radio Musicola", Nik Kershaw
+  bassline = (ring :b2,:b3,:e2,:e2,:r,:r,:e3,:g2,
+              :r,:e2,:g3,:e2,:r,:g3,:e2,:g2,
+              :r,:e3,:e2,:g3,:e2,:r,:g2,:r,
+              :e2,:g3,:e2,:g2,:r,:d2,:e2,:g2,
+              :a2,:r,:e2,:a2,:r,:e3,:a3,:a2,
+              :gs2,:r,:r,:e2,:gs2,:gs3,:e2,:gs3,
+              :r,:e2,:e3,:gs3,:e2,:r,:gs3,:e2,
+              :gs2,:r,:e3,:gs2,:r,:e2,:a2,:as2)
+
+  # bassline
+  live_loop :bass_line, sync: :four_bars do
+    #stop
+    use_synth :fm
+    use_synth_defaults amp: 0.75, attack: 0.0, sustain: 0.15, release: 0.01, cutoff: 70
+    play_pattern_timed bassline, 0.25
+  end
+
+end #comment

@@ -186,3 +186,22 @@ live_loop :play_pattern_timed_base_note do
   # You can't interchange `intervals` and `:c3`; does NOT work
   #play_pattern_timed :c5 + intervals, (ring 0.5)
 end
+
+######################################################
+# Play Pattern + Basenote
+######################################################
+
+live_loop :spread_and_synth do
+  stop
+  if spread((ring 7,9,11,15).choose,16).reverse.tick
+    s = synth :fm, note: (invert_chord (chord_degree [1,2,3].choose, :a1, :minor_pentatonic, 3), 3).look,
+              attack: 0,
+              sustain: 0,
+              release: 0.25,
+              divisor: 1,
+              depth: 1,
+              amp: (ring 0.15,0.25,0.05,0.25).choose
+    control s, depth_slide: 0.125, depth: 4
+  end
+  sleep 0.25
+end
