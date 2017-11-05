@@ -171,6 +171,19 @@ live_loop :play_with_tick do
   sleep 0.5
 end
 
+#-----------------------------------------------------
+# `tick` and `look`; 3 rings and `synth`
+#-----------------------------------------------------
+live_loop :play_with_tick_and_synth do
+  stop
+  note = (ring :g3, :c3, :r, :bb3, :c3, :bb3, :f3, :g3)
+  amp = (ring 1, 0.25, 0.15, 0.75, 0.25, 0.5, 0.75, 1)
+  rel = (ring 0.5, 0.25, 0.15, 0.5, 0.1, 0.75, 0.1, 0.25)
+s = synth :fm, note: note.tick, depth: 1, divisor: 1, release: rel.look, amp: amp.look
+  sleep 0.5
+end
+
+
 ######################################################
 # Play Pattern + Basenote
 ######################################################
