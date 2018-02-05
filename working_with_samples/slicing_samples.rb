@@ -30,6 +30,16 @@ live_loop :detect_onset_and_shuffle do
   end
 end
 
+live_loop :slice_rrand16 do
+  sample :loop_amen, beat_stretch: 4, num_slices: 16, slice: rrand_i(0, 15)
+  sleep 0.25
+end
+
+live_loop :slice_rrand8 do
+  sample :loop_amen, beat_stretch: 4, num_slices: 8, slice: rrand_i(0, 7)
+  sleep 0.5
+end
+
 # See what can be used of that:
 
 live_loop :amen do

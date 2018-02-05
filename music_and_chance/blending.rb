@@ -126,3 +126,8 @@ live_loop :blend_in_with_line_and_at do
   end
   sleep 4
 end
+
+# FIXME
+# Blending with control: 
+# Example 1: [[file:~/projects/sonicpi/playground/code/base/howto/blending-with-control-rn-1.rb][Robin Newman - Playing with Mod Synths]]
+# Example 2: [[file:~/projects/sonicpi/playground/code/base/howto/blending-with-control-rn-2.rb][Robin Newman - Ambi Glass Rub]]

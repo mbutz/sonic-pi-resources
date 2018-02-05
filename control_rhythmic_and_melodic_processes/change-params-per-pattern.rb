@@ -49,7 +49,7 @@ end
 ######################################################
 
 live_loop :chord_arppegio_sequence do
-  stop
+ stop
   # Set cycle length, 16 times 0.5 beats = 2 bars
   cycle = (range 1, 16)
   # if look = 15 reset; remember: tick starts with 0
@@ -109,20 +109,32 @@ live_loop :counting_tick_offset do
   stop
   use_synth_defaults release: 0.25
   i = tick offset: 1
-  bar = 4
-  if i <= bar * 1
+  beats_per_bar = 4
+  if i <= beats_per_bar * 1
     ptn = (invert_chord (chord :c, :major), 1)
-    puts "================== (1 _ _ _) #{i} ==============="
-  elsif i <= bar * 2
+    puts "Bar Counter: (1 _ _ _ _ _ _ _) #{i} ==============="
+  elsif i <= beats_per_bar * 2
     ptn = (invert_chord (chord :a, :minor),-1)
-    puts "================== (_ 2 _ _) #{i} ==============="
-  elsif i <= bar * 3
+    puts "Bar Counter: (_ 2 _ _ _ _ _ _) #{i} ==============="
+  elsif i <= beats_per_bar * 3
     ptn = (invert_chord (chord :f, :major),0)
-    puts "================== (_ _ 3 _) #{i} ==============="
-  elsif i <= bar * 4
+    puts "Bar Counter: (_ _ 3 _ _ _ _ _) #{i} ==============="
+  elsif i <= beats_per_bar * 4
     ptn = (invert_chord (chord :g, :major),-1)
-    puts "================== (_ _ _ 4) #{i} ==============="
-    tick_reset if i == bar * 4
+    puts "Bar Counter: (_ _ _ 4 _ _ _ _) #{i} ==============="
+  elsif i <= beats_per_bar * 5
+    ptn = (invert_chord (chord :e, :minor),0)
+    puts "Bar Counter: (_ _ _ _ 5 _ _ _) #{i} ==============="
+  elsif i <= beats_per_bar * 6
+    ptn = (invert_chord (chord :a, :minor),-1)
+    puts "Bar Counter: (_ _ _ _ _ 6 _ _) #{i} ==============="
+  elsif i <= beats_per_bar * 7
+    ptn = (invert_chord (chord :bb3, :major),1)
+    puts "Bar Counter: (_ _ _ _ _ _ 7 _) #{i} ==============="
+  elsif i <= beats_per_bar * 8
+    ptn = (invert_chord (chord :g, :major),-1)
+    puts "Bar Counter: (_ _ _ _ _ _ _ 8) #{i} ==============="
+    tick_reset if i == beats_per_bar * 8
   end
   play ptn
   sleep 0.5
@@ -132,56 +144,70 @@ end
 # Bass Phrase with Modulo
 ######################################################
 
-live_loop :bass do
+uncomment do
 
-  #stop
   use_bpm 130
 
-  # length of a bar in beats = length of live_loop's sleep time
-  beats_per_bar = 4
-  # How many bars should we count until the pattern starts all over again?
-  # Note: Has to be aligned with the beats_per_bar i. e. the runtime of the live_loop
-  bars = 16
-  # Return the bar number (the +1 makes sure we start counting from 1 and not from 0)
-  num_of_bar = tick % bars + 1
-
-  puts "============================="
-  puts "Tick: #{look} - No. of Bar: #{num_of_bar}"
-  puts "============================="
-
-
-  master_vol = 0.5
-
-  if num_of_bar <= beats_per_bar * 1 then # range from bar 1-4
-    note = :c1
-  elsif num_of_bar <= beats_per_bar * 2 then # range from bar 5-8
-    note = :c1
-  elsif num_of_bar <= beats_per_bar * 3 then # range from bar 9-12
-    note = :eb1
-  elsif num_of_bar <= beats_per_bar * 4 then # range from bar 13-16
-    note = :f1
+  live_loop :beat do
+    sleep 1
   end
 
-  use_synth :fm
-  use_synth_defaults attack: 0, sustain: 4, release: 0.5, amp: 0.5, depth: 0.5, divisor: 1, cutoff: 60
+  live_loop :bass, sync: :beat do
 
-  s = play note
+    # length of a bar in beats = length of live_loop's sleep time
+    beats_per_bar = 4
+    # How many bars should we count until the pattern starts all over again?
+    # Note: Must be as long as the runtime of the live_loop.
+    bars = 8 # 8 bars * 4 beats = 32 = length of phrase.
+    # Return the bar number of the current bar/tick.
+    # Modulo returns actually the tick but starts all over again,
+    # once 'bars' (length of the phrase has been reached).
+    num_of_bar = tick % bars
 
-  # This pattern is 4 beats long
-  control s, depth: 2, pan: -1, cutoff: 60, amp: 2 * master_vol
-  sleep 0.5
-  control s, depth: 4, pan: -0.75, cutoff: 70, amp: 2 * master_vol
-  sleep 0.5
-  control s, depth: 6, pan: -0.5, cutoff: 80, amp: 1 * master_vol
-  sleep 0.5
-  control s, depth: 8, pan: -0.25, cutoff: 90, amp: 1 * master_vol
-  sleep 0.5
-  control s, depth: 10, pan: 0, cutoff: 100, amp: 0.75 * master_vol
-  sleep 0.5
-  control s, depth: 12, pan: 0.25, cutoff: 110, amp: 0.75 * master_vol
-  sleep 0.5
-  control s, depth: 14, pan: 0.5, cutoff: 120, amp: 0.5 * master_vol
-  sleep 0.5
-  control s, depth: 16, pan: 1, amp: 0.5 * master_vol
-  sleep 0.5
-end
+    puts "================================"
+    puts "Tick: #{look} - 'Real' No. of Bar: #{num_of_bar +1}"
+    puts "================================"
+
+    master_vol = 0.75
+
+    # Because we work with tick we start the counting of bars at 0 (instead of 1) and
+    # therefore the setting of the note which changes during the pattern from
+    # :c to :eb to :f1 asks 'current bar' < than 'bar number where something should change'
+    if num_of_bar < 4 then # range from bar 1-4
+      note = :c1
+    elsif num_of_bar < 6 then # range from bar 5-6
+      note = :eb1
+    elsif num_of_bar < 8 then # range from bar 7-8
+      note = :f1
+    end
+
+    use_synth :fm
+    use_synth_defaults attack: 0, sustain: 4, release: 0.5, amp: 0.5, depth: 0.5, divisor: 1, cutoff: 60
+
+    s = play note
+
+    # This pattern is 4 beats long
+    control s, depth: 2, pan: -1, cutoff: 60, amp: 2 * master_vol
+    sleep 0.5
+    control s, depth: 4, pan: -0.75, cutoff: 70, amp: 2 * master_vol
+    sleep 0.5
+    control s, depth: 6, pan: -0.5, cutoff: 80, amp: 1 * master_vol
+    sleep 0.5
+    control s, depth: 8, pan: -0.25, cutoff: 90, amp: 1 * master_vol
+    sleep 0.5
+    control s, depth: 10, pan: 0, cutoff: 100, amp: 0.75 * master_vol
+    sleep 0.5
+    control s, depth: 12, pan: 0.25, cutoff: 110, amp: 0.75 * master_vol
+    sleep 0.5
+    control s, depth: 14, pan: 0.5, cutoff: 120, amp: 0.5 * master_vol
+    sleep 0.5
+    control s, depth: 16, pan: 1, cutoff: 130, amp: 0.5 * master_vol
+    sleep 0.5
+  end
+
+  live_loop :amen, sync: :beat do
+    sample :loop_amen, beat_stretch: 4
+    sleep 4
+  end
+
+end # comment
