@@ -36,6 +36,7 @@ use_bpm 120
 
 # fade in
 live_loop :fade_in_with_line_ramp do
+  stop
   vol = (line 0, 1, inclusive: true, steps: 100).ramp
   ptn = (ring 1,0,0,0,1,0,0,0.25,1,0,0,0,1,0,0,0.25)
   sample :bd_tek, amp: vol.tick * ptn.look
@@ -44,6 +45,7 @@ end
 
 # fade out
 live_loop :fade_out_with_line_ramp do
+  stop
   vol = (line 1, 0, inclusive: true, steps: 100).ramp
   ptn = (ring 1,0,0,0,1,0,0,0.25,1,0,0,0,1,0,0,0.25)
   sample :bd_tek, amp: vol.tick * ptn.look
@@ -52,6 +54,7 @@ end
 
 # fade in and out
 live_loop :fade_in_and_out_with_line_ramp do
+  stop
   vol = (line 0, 1, inclusive: true, steps: 100).mirror
   ptn = (ring 1,0,0,0,1,0,0,0.25,1,0,0,0,1,0,0,0.25)
   sample :bd_tek, amp: vol.tick * ptn.look
@@ -67,6 +70,7 @@ end
 
 # fade in
 live_loop :fade_in_with_range_ramp do
+  stop
   vol = (range 0, 1, step: 0.005).ramp
   ptn = (ring 1,0,0,0,1,0,0,0.25,1,0,0,0,1,0,0,0.25)
   sample :bd_tek, amp: vol.tick * ptn.look
@@ -75,6 +79,7 @@ end
 
 # fade out
 live_loop :fade_out_with_range_ramp do
+  stop
   vol = (range 1, 0, step: 0.005).ramp # swap 1st two `range` params
   ptn = (ring 1,0,0,0,1,0,0,0.25,1,0,0,0,1,0,0,0.25)
   sample :bd_tek, amp: vol.tick * ptn.look
@@ -83,6 +88,7 @@ end
 
 # fade in/out
 live_loop :fade_out_with_range_ramp do
+  stop
   vol = (range 0, 1, step: 0.005).mirror # swap 1st two `range` params
   ptn = (ring 1,0,0,0,1,0,0,0.25,1,0,0,0,1,0,0,0.25)
   sample :bd_tek, amp: vol.tick * ptn.look
@@ -125,9 +131,9 @@ end
 # Fade using control and double-tick
 #-----------------------------------------------------
 live_loop :fade_inout_amen do
-  stop
+  #stop
 
-  vol = (line 0, 1, inclusive: true, steps: 24).mirror
+  vol = (line 0, 1, inclusive: true, steps: 4).mirror
 
   s = sample :loop_amen, beat_stretch: 4, amp: vol.tick
   puts "---------- Vol 1: #{vol.look} ----------"
@@ -135,7 +141,6 @@ live_loop :fade_inout_amen do
   puts "---------- Vol 2: #{vol.look} ----------"
   sleep 4
 end
-
 
 live_loop :fade_inout_synth do
   stop
@@ -153,7 +158,7 @@ end
 
 
 live_loop :fade_in_keys do
-  #stop
+  stop
   ptn = (ring
          (chord :a4, :minor7, invert: 0),
          :r,
