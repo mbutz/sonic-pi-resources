@@ -1,6 +1,9 @@
 # Sonic Pi resources collected by Martin Butz, mb@mkblog.org
 # filename: fading.rb
 
+# For fading complete buffers and fading a track with in_thread
+# see: fading-complete-song-with-in-thread.rb
+
 # use 'uncomment' resp. 'comment' to play selected examples or
 # 'stop' resp. '#stop' to play the loops
 
@@ -128,19 +131,41 @@ live_loop :fade_in_with_line_and_at do
 end
 
 #-----------------------------------------------------
-# Fade using control and double-tick
+# Smooth Fades: Fade using control and double-tick
 #-----------------------------------------------------
-live_loop :fade_inout_amen do
-  #stop
+# In general it is not advised to use tick 2 times in
+# one and the same live_loop. In this case it helps
+# to achieve a _smooth_ fade.
+# Check out the different ways to set 'vol'
 
-  vol = (line 0, 1, inclusive: true, steps: 4).mirror
+live_loop :fade_inout_amen do
+  stop
+
+  # With slide _and_ step:
+  # You can build a line just like the above examples.
+  # Will result in: (ring 0.0, 0.75, 1.5, 1.5, 0.75, 0.0).
+  # As you then will have only one value for each amp step
+  # (except in the middle which results from the '.mirror'),
+  # you will acutually slide from 1st to 2nd, step directly
+  # to the 3rd, slide to the 4th aso.
+
+  #vol = (line 0, 2, inclusive: true, steps: 4).mirror
+
+  # Smoothly with only slides:
+  # 1. tick value: 0 => control will slide amp to 2. tick value: 0.5 aso.
+  vol = (ring 0, 0.5, 0.5, 0.75, 0.75, 1, 1, 1.25, 1.25, 1.5).mirror
+
+  # Smoothly with only slides (alternative way of creating the ring):
+  # You can also use the 'knit' command to create this ring:
+  # vol = (knit 0,1, 0.5,2, 0.75,2, 1,2, 1.25,2, 1.5,1).mirror
 
   s = sample :loop_amen, beat_stretch: 4, amp: vol.tick
-  puts "---------- Vol 1: #{vol.look} ----------"
+  puts "---------- Fading from Vol 1 (tick is: #{look}): #{vol.look} ... ----------"
   control s, amp_slide: 4, amp: vol.tick
-  puts "---------- Vol 2: #{vol.look} ----------"
+  puts "---------- ... to Vol 2 (tick is: #{look}): #{vol.look} ----------"
   sleep 4
 end
+
 
 live_loop :fade_inout_synth do
   stop
@@ -149,16 +174,18 @@ live_loop :fade_inout_synth do
   s = synth :dtri, cutoff: 70, note: :e3, sustain: 8, release: 0, amp: vol.tick(:v)
   puts "---------- Vol 1: #{vol.look(:v)} ----------"
   32.times do
-    control s, note: notes.tick, note_slide: 0.005, amp_slide: 0.125, amp: vol.tick(:v)
+    control s, note: notes.tick, note_slide: 0.005, amp_slide: 0.25, amp: vol.tick(:v)
     puts "---------- Vol 1: #{vol.look(:v)} ----------"
     sleep 0.25
   end
 end
 
-
-
+# Using 2 different ticks:
+# Sometimes you will need more than one tick. You can create your custom
+# tick by giving it a name, such as tick(:v); this will be the one to
+# fade the volume. The other, unnamed tick is used to walk through the chords.
 live_loop :fade_in_keys do
-  stop
+  #stop
   ptn = (ring
          (chord :a4, :minor7, invert: 0),
          :r,
@@ -176,13 +203,12 @@ live_loop :fade_in_keys do
          (chord :a4, '7sus2', invert: -1), #
          (chord :d4, '7sus4', invert: 0),
          :r
-        )
+         )
 
-    vol = (line 0, 1, inclusive: true, steps: 500).mirror
-    with_fx :wobble, mix: vol.look(:v) do
+  vol = (line 0, 1, inclusive: true, steps: 500).mirror
+  with_fx :wobble, mix: vol.look(:v) do
     s = synth :dpulse, note: ptn.tick, attack: 0.075, release: 0.25, cutoff: 50, pulse_width: 0.015, dpulse_width: 0.025, amp: vol.tick(:v)
     control s, cutoff_slide: 0.015, cutoff: 110, pulse_width_slide: 0.25, pulse_width: 0.95, dpulse_width: 0.5, dpulse_width_slide: 0.25, amp_slide: 0.25, amp: vol.tick(:v)
   end
   sleep 0.25
 end
-
