@@ -11,11 +11,76 @@ use_bpm 120
 # a bassline that repeats three times and than is variated
 # in a certain way to start over all again.
 
+# The general principle of the next two examples is the following:
+# 1. We count the `live_loop` runs with `tick`
+# 2. As we want to count a recurrent pattern such as
+#    16 beats or 4 bars we can not count the raw tick,
+#    because this will not count e. g. from 0 to 16 but
+#    go on forever (as long as the `live_loop` is running).
+#    So we use the modulo operator `%` to create a counter
+#    that runs through our phrase (beats/bars) and then
+#    starts all over again: Modulo gives us the remainder of
+#    of an integer division, meaning 5 / 48 will return 5
+#    because as a whole number 5 can't be devided by 48.
+#    48 / 48 will return 0 because there is no remainder.
+#    In the end the expression `tick / 48` will return a
+#    counter that goes from 0 to 47 and then starts with
+#    0 again. Now we can count our beats or bars using
+#    a human readable notation...
+
 ######################################################
-# Bass Phrase with Modulo
+# Blues Bassline: Counting beats with Modulo
+######################################################
+
+# not very musical but meant as a simple proof of concept
+comment do
+
+  live_loop :blues do
+
+    use_bpm 120
+
+    beat = tick           # beat counter
+    beats = 48             # length of phrase in beats; 48 / 4 = 12 bars
+    counter = beat % beats # count the beats of the phrase
+
+    puts "Counter is at: #{counter}"
+
+    if counter < 4
+      n = :c2
+    elsif counter < 8  # First two bars
+      n = :f2
+    elsif counter < 16 # 3rd and 4th bar
+      n = :c2
+    elsif counter < 24 # aso.
+      n = :f2
+    elsif counter < 32
+      n = :c2
+    elsif counter < 36
+      n = :g2
+    elsif counter < 40
+      n = :f2
+    elsif counter < 48
+      n = :c2
+    end
+
+    with_synth :fm do
+      with_synth_defaults cutoff: 70, depth: 0.5, divisor: 1 do
+        play n
+      end
+    end
+    sleep 1
+  end
+
+end # comment
+
+
+######################################################
+# Bass Phrase: Counting Bars with Modulo
 ######################################################
 
 comment do
+
+  # a musically more advanced example following the same idea
 
   use_bpm 130
 
@@ -25,11 +90,12 @@ comment do
 
   live_loop :bass, sync: :beat do
 
-    # length of a bar in beats = length of live_loop's sleep time
-    beats_per_bar = 4
     # How many bars should we count until the pattern starts all over again?
     # Note: Will be as long as the runtime of the live_loop.
     bars = 8 # 8 bars * 4 beats = 32 = length of phrase.
+    # NOTE: As we count the runs of the live_loop and the live_loop in
+    # this example sleeps for 4 beats we are acutually counting bars -
+    # not beats as in the example before.
     # Return the bar number of the current bar/tick.
     # Modulo returns actually the tick but starts all over again,
     # once 'bars' (length of the phrase has been reached).
@@ -98,13 +164,17 @@ end # comment
 # are just a visual aid to check whether everything
 # works as expected.
 
-live_loop :counting_tick_offset do
-  stop
-  use_synth_defaults release: 0.25
-  i = tick offset: 1
-  beats_per_bar = 4
-  if i <= beats_per_bar * 1
-    ptn = (invert_chord (chord :c, :major), 1)
+comment do
+
+  live_loop :counting_tick_offset do
+
+    use_synth_defaults release: 0.25
+
+    beats = tick
+    i = tick offset: 1
+    beats_per_bar = 4
+    if i <= beats_per_bar * 1
+      ptn = (invert_chord (chord :c, :major), 1)
     puts "Bar Counter: (1 _ _ _ _ _ _ _) #{i} ==============="
   elsif i <= beats_per_bar * 2
     ptn = (invert_chord (chord :a, :minor),-1)
@@ -127,11 +197,13 @@ live_loop :counting_tick_offset do
   elsif i <= beats_per_bar * 8
     ptn = (invert_chord (chord :g, :major),-1)
     puts "Bar Counter: (_ _ _ _ _ _ _ 8) #{i} ==============="
-    tick_reset if i == beats_per_bar * 8
+      tick_reset if i == beats_per_bar * 8
+    end
+    play ptn
+    sleep 0.5
   end
-  play ptn
-  sleep 0.5
-end
+
+end # comment
 
 ######################################################
 # Toggle Two Melodic Patterns using `tick` and `at`
@@ -141,28 +213,32 @@ end
 # where you setup melody phrases
 # Toggle beteen two melodies every 4 bars i. e. every run of the live_loop i. e. 8 beats
 # use tick and use fact that tick increases each run of live_loop
-live_loop :melody do
-  stop
 
-  use_synth :fm
-  use_synth_defaults depth: 0.125, divisor: 1, attack: 0, release: 0.5
+uncomment do
 
-  tick # call 'tick' once, then use 'look'
+  live_loop :melody do
 
-  # Set up your melodic patterns
-  mel1 = (ring :d3, :c4, :a3, :f3, :a3, :c3)
-  mel2 = (ring :c3, :bb3, :g3, :eb3, :g3, :bb2)
+    use_synth :fm
+    use_synth_defaults depth: 0.125, divisor: 1, attack: 0, release: 0.5
 
-  # Set up the succession of patterns, tick/look will walk through it
-  mel = (ring mel1, mel1, mel2, mel2)
-  # and alternative way of writing is to use 'knit':
-  # mel = (knit mel1, 2, mel2, 2)
+    tick # call 'tick' once, then use 'look'
 
-  # Set up the patterns rhythm (you could adjust the rhythm like the melody)
-  ptn = (ring 0,1,2,3,6.5,7.5)
+    # Set up your melodic patterns
+    mel1 = (ring :d3, :c4, :a3, :f3, :a3, :c3)
+    mel2 = (ring :c3, :bb3, :g3, :eb3, :g3, :bb2)
 
-  at ptn, mel.look do |n|
-    play n
+    # Set up the succession of patterns, tick/look will walk through it
+    mel = (ring mel1, mel1, mel2, mel2)
+    # and alternative way of writing is to use 'knit':
+    # mel = (knit mel1, 2, mel2, 2)
+
+    # Set up the patterns rhythm (you could adjust the rhythm like the melody)
+    ptn = (ring 0,1,2,3,6.5,7.5)
+
+    at ptn, mel.look do |n|
+      play n
+    end
+    sleep 8
   end
-  sleep 8
-end
+
+end # comment
