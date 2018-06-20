@@ -1,7 +1,5 @@
 # Sonic Pi resources collected by Martin Butz, mb@mkblog.org
 # filename: change-params-per-pattern.rb
-# 'uncomment' the example you wan't to listen to...
-
 # Use 'un/comment' or 'stop' to listen to the examples.
 
 use_bpm 120
@@ -151,6 +149,57 @@ comment do
 
 end # comment
 
+######################################################
+# Blues Form: Using `at` to create pattern
+######################################################
+comment do
+
+  live_loop :blues do
+    use_bpm 120
+    use_synth :fm
+    use_synth_defaults cutoff: 70, depth: 0.5, divisor: 1
+
+    at (ring 0,4,8,
+             12,16,20,
+             24,28,32,
+             36,40,44),
+       (ring :c2,:f2,:c2,:c2,
+             :f2,:f2,:c2,:c2,
+             :g2,:f2,:c2,:c2) do |n|
+      4.times do
+        play n
+        sleep 1
+      end
+      sleep 48
+    end
+  end
+
+end # comment
+
+comment do
+  live_loop :blues_alt_notation do
+    use_bpm 120
+    use_synth :fm
+    use_synth_defaults cutoff: 70, depth: 0.5, divisor: 1
+
+    bar   = (line 0,48, steps: 12) # every beat of a bar
+    notes = (knit :c2, 1, :f2, 1,
+                  :c2, 2,
+                  :f2, 2,
+                  :c2, 2,
+                  :g2, 1, :f2, 1,
+                  :c2, 2)
+
+    at bar,notes do |n|
+      4.times do
+        play n
+        sleep 1
+      end
+      sleep 48
+    end
+  end
+
+end # comment
 
 ######################################################
 # Chord Sequence with Human Readable Counter
@@ -227,13 +276,13 @@ uncomment do
     mel1 = (ring :d3, :c4, :a3, :f3, :a3, :c3)
     mel2 = (ring :c3, :bb3, :g3, :eb3, :g3, :bb2)
 
-    # Set up the succession of patterns, tick/look will walk through it
-    mel = (ring mel1, mel1, mel2, mel2)
-    # and alternative way of writing is to use 'knit':
-    # mel = (knit mel1, 2, mel2, 2)
-
     # Set up the patterns rhythm (you could adjust the rhythm like the melody)
     ptn = (ring 0,1,2,3,6.5,7.5)
+
+    # Set up the succession of patterns, tick/look will walk through it
+    mel = (ring mel1, mel1, mel2, mel2)
+    # and alternative and slightly shorter way of notation is to use 'knit':
+    # mel = (knit mel1, 2, mel2, 2)
 
     at ptn, mel.look do |n|
       play n
