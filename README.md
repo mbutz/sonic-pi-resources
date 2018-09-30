@@ -19,9 +19,6 @@ A preliminary outline of issues I have in mind and will gradually complete:
    * Echo and break
    * Noise to music using `:bpf`
    * Hall-Schwanz
-   * Filter (un)wanted frequencies
-     * FIXME: band_eq
-     * FIXME: hpf
   * Synths
   * `:fm` (frequency modulation)
   * `control` a running synth
@@ -29,9 +26,8 @@ A preliminary outline of issues I have in mind and will gradually complete:
   * [Volume (Blending)]((https://github.com/mbutz/sonic-pi-resources/blob/master/blending.rb))
   * Fake L(ow)F(requency)O(sscilator)
 * Drums
-   * FIXME: synthetic kick with synth
-   * FIXME: technique to create 32-bar-pattern
-   * FIXME: Create drum loop from sliced samples
+   * Kick Sound Synthesis
+   * [Drums and Fill-ins](https://github.com/mbutz/sonic-pi-resources/blob/master/working_with_samples/drum-loops-with-fill-ins.rb)
 * Miscellaneous musical ideas and effects
   * Percussion with noise
   * `slicer` and rhythm
@@ -39,13 +35,7 @@ A preliminary outline of issues I have in mind and will gradually complete:
   * Echo and canon
   * Layered samples with different rates
 * Music and chance
-* Linear flow versus loo
 * [Working with Samples](https://github.com/mbutz/sonic-pi-resources/blob/master/working_with_samples)
   * [Slicing Samples](https://github.com/mbutz/sonic-pi-resources/blob/master/working_with_samples/slicing_samples.rb)
-  * FIXME: Referencing samples in collections
-  * FIXME: Rhythmic sample overlays (running samples at different rates, same duration, one live_loop) 
-* Live Looper
-  * FIXME: Recorder
-  * FIXME: Recorder with fading sound
 
 (I will write in English. This is not my first language. If you find errors and misspellings ignore it or let me know so I can fix that and improve my English.)
