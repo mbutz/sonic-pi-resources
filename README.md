@@ -28,6 +28,7 @@ A preliminary outline of issues I have in mind and will gradually complete:
 * Drums
    * Kick Sound Synthesis
    * [Drums and Fill-ins](https://github.com/mbutz/sonic-pi-resources/blob/master/drum-loops-with-fill-ins.rb)
+   * [Techno Kick and Hihat Patterns](https://github.com/mbutz/sonic-pi-resources/blob/master/techno-kick-and-hihat-patterns.rb)
 * Miscellaneous musical ideas and effects
   * Percussion with noise
   * `slicer` and rhythm
