@@ -37,6 +37,6 @@ A preliminary outline of issues I have in mind and will gradually complete:
   * Layered samples with different rates
 * Music and chance
 * Working with Samples
-  * [Slicing Samples](https://github.com/mbutz/sonic-pi-resources/blob/master/working_with_samples/slicing_samples.rb)
+  * [Slicing Samples](https://github.com/mbutz/sonic-pi-resources/blob/master/slicing-samples.rb)
 
 (I will write in English. This is not my first language. If you find errors and misspellings ignore it or let me know so I can fix that and improve my English.)

@@ -184,8 +184,10 @@ live_loop :breakbeat3 do
   #stop
   
   # use 'onset' to separate a snare hit, 'attack_level' and 'hpf' to adjust the sound
-  # and 'at' plus a 'range' for the timing
-  at (range 0.25,7,0.5) do
+  # for a kind of hihat-like sound
+  # 'at' plus a 'range' for the timing, will result in (see: documentation: `range`):
+  # (ring 0.25, 0.75, 1.25, 1.75, 2.25, 2.75, 3.25, 3.75)
+  at (range 0.25, 4, 0.5) do
     sample :loop_breakbeat, beat_stretch: 2, onset: 11, attack_level: 10, release: 0.25, hpf: 125, amp: 3
   end
   
@@ -204,5 +206,3 @@ live_loop :breakbeat3 do
   end
   
 end
-
-# Example 9 -----------------------------------------------------------------
