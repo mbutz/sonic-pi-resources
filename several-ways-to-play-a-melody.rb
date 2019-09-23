@@ -168,6 +168,19 @@ live_loop :rings_with_three_ticks do
 end
 
 ######################################################
+# Using Ruby's Multiple Assignment Features
+######################################################
+live_loop :double_assignment do
+  stop
+  the_note, the_relealse = (ring [:c, 0.75,],
+                                 [:e, 0.25], [:e, 0.25],
+                                 [:g, 0.125], [:g, 0.125], [:g, 0.125], [:g, 0.125]).tick
+  play the_note, release: the_release
+  sleep 0.5
+end
+
+
+######################################################
 # Play Pattern + Basenote
 ######################################################
 # An experiment: You can provide a base note (':c4'),
