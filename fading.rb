@@ -1,5 +1,5 @@
 # Sonic Pi resources collected by Martin Butz, mb@mkblog.org
-# filename: blending.rb
+# filename: fading.rb
 
 # For fading complete buffers and fading a track with in_thread
 # see: fading-complete-song-with-in-thread.rb
