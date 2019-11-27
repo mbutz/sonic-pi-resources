@@ -1,63 +1,132 @@
 # How to manipulate a collection of notes (a list)
 # Of course the list could contain other values such
-# as a number of cutoff values aso.
+# cutoff values aso.
 #
 # manipulate-a-collection-of-notes.rb
 
-# Note: Not all of these methods are officially supported
-# by Sonic Pi, but some of them are pure Ruby; they do work
-# by the time I wrote this file though.
+# Note: _Not_ all of these methods are officially supported
+# by Sonic Pi, some of them are pure Ruby; they do work
+# by the time I wrote this file though (Sonic Pi 3.1).
 # For a list of officially supported Sonic Pi functions see:
 # chapter 8.5 of the tutorial.
 
 # We start with this note collection
-ptn0 = (scale :d, :aeolian)
-puts "Original: #{ptn0}"
+a_scale = (scale :d, :aeolian)
+puts "A scale (original): #{a_scale}"
+puts "------------------------------------------------------------"
+one_to_five = (range 0, 6, step: 1)
+puts "One to five (original): #{one_to_five}"
+puts "------------------------------------------------------------"
+random_notes = (ring 122, 8, 20, 39, 87)
+puts "Random notes (original): #{random_notes}"
+puts "------------------------------------------------------------"
+a_chord = (chord :a, :major7)
+puts "A chord (A Major 7): #{a_chord}"
+puts "============================================================"
 
 # Remove first (base) note
-ptn1 = ptn0.delete_at(0)
-puts "Remove first: #{ptn1}"
+ptn1 = a_chord.delete_at(0)
+puts "delete_at(0):"
+puts "#{a_chord} =>"
+puts "#{ptn1}"
+puts "------------------------------------------------------------"
 
 # Reverse
-ptn2 = ptn0.reverse
-puts ": #{ptn}"
+ptn2 = a_chord.reverse
+puts "reverse:"
+puts "#{a_chord} =>"
+puts "#{ptn2}"
+puts "------------------------------------------------------------"
 
-# .reverse - gibt eine umgedrehte Version des Rings zurück
-# .sort - stellt eine sortierte Version des Rings her
-puts ": #{ptn}"
+# Sort
+ptn3 = random_notes.sort
+puts "sort:"
+puts "#{random_notes} =>"
+puts "#{ptn3}"
+puts "------------------------------------------------------------"
 
-# .shuffle - liefert eine neu gemischte Version des Rings
-puts ": #{ptn}"
+# Shuffle
+ptn4 = one_to_five.shuffle
+puts "shuffle:"
+puts "#{one_to_five} =>"
+puts "#{ptn4}"
+puts "------------------------------------------------------------"
 
-# .pick(3) - liefert einen Ring nachdem 3-mal .choose angewendet wurde
-puts ": #{ptn}"
+# Random pick, apply 'choose' 3 times
+ptn5 = a_scale.pick(3)
+puts "pick(3):"
+puts "#{a_scale} =>"
+puts "#{ptn5}"
+puts "------------------------------------------------------------"
 
-# .take(5) - liefert einen neuen Ring, der nur die ersten 5 Elementen enthält
-puts ": #{ptn}"
+# .take(3) - return head
+ptn6 = a_scale.take(3)
+puts "take(3):"
+puts "#{a_scale} =>"
+puts "#{ptn6}"
+puts "------------------------------------------------------------"
 
-# .drop(3) - liefert einen neuen Ring, der alles außer den ersten 3 Elementen enthält
-puts ": #{ptn}"
+# .drop(5) - remove head
+ptn7 = a_scale.drop(5)
+puts "drop(5):"
+puts "#{a_scale} =>"
+puts "#{ptn7}"
+puts "------------------------------------------------------------"
 
-# .butlast - liefert einen neuen Ring ohne das letzte Element
-puts ": #{ptn}"
+# .butlast - remove last
+ptn8 = a_scale.butlast
+puts "butlast:"
+puts "#{a_scale} =>"
+puts "#{ptn8}"
+puts "------------------------------------------------------------"
 
-# .drop_last(3) - liefert einen neuen Ring ohne die letzten 3 Elemente
-puts ": #{ptn}"
 
-# .take_last(6)- liefert einen neuen Ring, der nur die letzten 6 Elemente enthält
-puts ": #{ptn}"
+# .drop_last(5) - remove tail
+ptn9 = a_scale.drop_last(5)
+puts "drop_last(5):"
+puts "#{a_scale} =>"
+puts "#{ptn9}"
+puts "------------------------------------------------------------"
 
-# .stretch(2) - wiederholt jedes Element im Ring zweimal
-puts ": #{ptn}"
+# .take_last(3) - return tail
+ptn10 = a_scale.take_last(3)
+puts "take_last(3):"
+puts "#{a_scale} =>"
+puts "#{ptn10}"
+puts "------------------------------------------------------------"
 
-# .repeat(3) - wiederholt den ganzen Ring 3-mal
-puts ": #{ptn}"
+# .stretch(3) - repeat each n times
+ptn11 = a_chord.stretch(3)
+puts "stretch(3):"
+puts "#{a_chord} =>"
+puts "#{ptn11}"
+puts "------------------------------------------------------------"
 
-# .mirror - hängt eine umgekehrte Version des Rings an die ursprüngliche an
-puts ": #{ptn}"
+# .repeat(3) - repeat ring n times
+ptn12 = a_chord.repeat(3)
+puts "repeat(3):"
+puts "#{a_chord} =>"
+puts "#{ptn12}"
+puts "------------------------------------------------------------"
 
-# .reflect - wie .mirror, verdoppelt aber nicht die mittleren Werte
-puts ": #{ptn}"
+# .mirror - 2 center elements
+ptn13 = a_chord.mirror
+puts "mirror:"
+puts "#{a_chord} =>"
+puts "#{ptn13}"
+puts "------------------------------------------------------------"
 
-# .scale(2) - gibt einen neuen Ring zurück, der alle Elemente des ursprünglichen Rings mit 2 multipliziert enthält (Voraussetzung: Ring enthält nur Zahlen)
-puts ": #{ptn}"
+# .reflect - only one center element
+ptn14 = a_chord.reflect
+puts "reflect:"
+puts "#{a_chord} =>"
+puts "#{ptn14}"
+puts "------------------------------------------------------------"
+
+# .scale(2) - multiply each element
+ptn15 = a_chord.scale(2)
+puts "scale(2):"
+puts "#{a_chord} =>"
+puts "#{ptn15}"
+puts "------------------------------------------------------------"
+
