@@ -130,3 +130,10 @@ puts "#{a_chord} =>"
 puts "#{ptn15}"
 puts "------------------------------------------------------------"
 
+# .values_at(0, 2, 4, 6) - select element(s)
+puts (scale :e3, :minor).values_at(0, 2, 4)
+ptn16 = a_scale.values_at(0, 2, 4, 6)
+puts "values_at(0, 2, 4, 6):"
+puts "#{a_scale} =>"
+puts "#{ptn16}"
+puts "------------------------------------------------------------"
